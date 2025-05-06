@@ -7,52 +7,55 @@ from dateutil.parser import parse
 
 
 
-
 def preprocess(data):
     cleaned_data = []
 
     for line in data:
-        # Remove all AM/PM variations (including Unicode space variants)
-        for variant in ['\u202fAM', '\u202fPM', ' AM', ' PM', ' AM', ' PM']:
-            line = line.replace(variant, '')
+        # Remove AM/PM variations with optional unicode/regular spaces before them (case-insensitive)
+        line = re.sub(r'[\u202f\u00a0 ]?\bAM\b', '', line, flags=re.IGNORECASE)
+        line = re.sub(r'[\u202f\u00a0 ]?\bPM\b', '', line, flags=re.IGNORECASE)
 
-        # Clean up leading/trailing junk
+        # Remove leading/trailing junk characters
         line = line.strip(" '\n,")
 
-        # Fix spacing before hyphen
-        line = line.replace("  -", " -")
+        # Normalize weird spacing before hyphen (e.g., double space before dash)
+        line = re.sub(r'\s{2,}-', ' -', line)     # e.g. "  -" → " -"
+        line = re.sub(r'\s+-', ' -', line)        # e.g. "   -" or " -" → " -"
 
         cleaned_data.append(line)
-
-    pattern_12h = r'^(\d{1,2}/\d{1,2}/\d{2}), (\d{1,2}:\d{2}) - (.+)'
-    pattern_24h = r'^(\d{1,2}/\d{1,2}/\d{2}), ((?:[01]\d|2[0-3]):[0-5]\d) - (.+)'
 
     date_time_list = []
     message_list = []
 
+
+    pattern = r'^(\d{1,2}[/-]\d{1,2}[/-]\d{2,4}),\s*(\d{1,2}:\d{2})\s*-\s*(.+)'
+
     for line in cleaned_data:
-        match = re.match(pattern_24h, line) or re.match(pattern_12h, line)
+        match = re.match(pattern, line)
         if match:
             date, time, message = match.groups()
             date_time_list.append(f"{date}, {time}")
             message_list.append(message)
 
     df = pd.DataFrame({'user_message': message_list, 'dates': date_time_list})
+    # df['dates'] = pd.to_datetime(df['dates'], errors='coerce')
     df['dates'] = df['dates'].apply(parse)
 
     users = []
-    message = []
+    messages = []
 
     for msg in df['user_message']:
-        entry = re.split('([\w\W]+?):\s', msg)
-        if entry[1:]:
-            users.append(entry[1])
-            message.append(entry[2])
+        # Try splitting only at the first colon that separates user from message
+        split_msg = re.split(r'^([^:]+?):\s', msg)
+        if len(split_msg) == 3:
+            users.append(split_msg[1])
+            messages.append(split_msg[2])
         else:
             users.append('group_notification')
-            message.append(entry[0])
+            messages.append(msg)
+
     df['user'] = users
-    df['message'] = message
+    df['message'] = messages
     df.drop(columns=['user_message'], inplace=True)
 
     df['year'] = df['dates'].dt.year
@@ -74,5 +77,4 @@ def preprocess(data):
     df['period'] = period
 
     return df
-
 

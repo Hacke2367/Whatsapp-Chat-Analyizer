@@ -61,7 +61,6 @@ if uploaded_file and 'analyze_btn' in locals():
         lcol.markdown(f"**Last Message:** `{last_msg}`")
         st.caption("Note: Media messages may appear as '<Media omitted>'.")
 
-        # Monthly Activity
         # Monthly Activity Plot (Enhanced)
         st.markdown("---")
         st.markdown("### 📆 Monthly Activity")
@@ -69,7 +68,6 @@ if uploaded_file and 'analyze_btn' in locals():
 
         # Create figure with custom size
         fig, ax = plt.subplots(figsize=(14, 6))
-        ax.set_facecolor('#0E1117')
 
         # Plot styling
         ax.plot(
@@ -140,7 +138,6 @@ if uploaded_file and 'analyze_btn' in locals():
             heatmap = helper.activity_heatmap(selected_user, df)
 
             fig, ax = plt.subplots()
-            ax.set_facecolor('#0E1117')
 
             # Heatmap with annotations and styling
             sns.heatmap(
@@ -183,7 +180,6 @@ if uploaded_file and 'analyze_btn' in locals():
             with tab1:
                 daily = helper.busyday_graph(selected_user, df)
                 fig, ax = plt.subplots()
-                ax.set_facecolor('#0E1117')
                 ax.bar(daily.index, daily.values, color='#25CED1',edgecolor='white')
                 apply_dark_theme(ax)
                 plt.xticks(rotation=45)
@@ -192,7 +188,6 @@ if uploaded_file and 'analyze_btn' in locals():
             with tab2:
                 monthly = helper.monthbusy_graph(selected_user, df)
                 fig, ax = plt.subplots()
-                ax.set_facecolor('#0E1117')
                 ax.bar(monthly.index, monthly.values, color='#FF8A5B',edgecolor='white')
                 apply_dark_theme(ax)
                 plt.xticks(rotation=45)
@@ -210,7 +205,6 @@ if uploaded_file and 'analyze_btn' in locals():
 
             with col1:
                 fig, ax = plt.subplots(figsize=(8, 5))
-                ax.set_facecolor('#0E1117')
                 ax.bar(
                     top_users.index,
                     top_users.values,
@@ -255,7 +249,6 @@ if uploaded_file and 'analyze_btn' in locals():
             st.subheader("☁️ Word Cloud")
             wc = helper.create_wordcloud(selected_user, df)
             fig, ax = plt.subplots()
-            ax.set_facecolor('#0E1117')
             ax.imshow(wc)
             ax.axis("off")
             plt.tight_layout()
@@ -265,7 +258,6 @@ if uploaded_file and 'analyze_btn' in locals():
             st.subheader("🔠 Most Common Words")
             common = helper.most_common_words(selected_user, df)
             fig, ax = plt.subplots()
-            ax.set_facecolor('#0E1117')
             ax.barh(common[0], common[1], color='limegreen')
             apply_dark_theme(ax)
             plt.tight_layout()
@@ -337,7 +329,6 @@ if uploaded_file and 'analyze_btn' in locals():
             with col2:
                 st.subheader("🏆 Top 5 Fastest Responders")
                 fig, ax = plt.subplots()
-                ax.set_facecolor('#0E1117')
                 ax.bar(top5['responder'], top5['response_time_min'], color='#FF6B6B')
                 ax.set_xlabel("Member")
                 ax.set_ylabel("Avg Response Time (mins)")
@@ -376,7 +367,6 @@ if uploaded_file and 'analyze_btn' in locals():
                 col3.metric("Total Messages", len(user_df))
 
                 fig, ax = plt.subplots()
-                ax.set_facecolor('#0E1117')
                 sns.barplot(x=[user_avg, comparison['group_avg']],
                             y=['You', 'Group'], palette=['skyblue', 'lightgray'], ax=ax)
                 ax.set_xlim(-1, 1)
@@ -392,7 +382,6 @@ if uploaded_file and 'analyze_btn' in locals():
                 col2.metric("Dominant Sentiment", counts.idxmax())
 
                 fig, ax = plt.subplots(1, 2, figsize=(16, 5))
-                ax.set_facecolor('#0E1117')
                 plt.yticks(rotation= 40)
                 sns.countplot(data=sentiment_df, x='sentiment_label',
                               order=['Negative', 'Neutral', 'Positive'], ax=ax[0])
@@ -413,7 +402,6 @@ if uploaded_file and 'analyze_btn' in locals():
                     sentiment_df['month'] = sentiment_df['dates'].dt.strftime('%Y-%m')
                     monthly = sentiment_df.groupby('month')['sentiment'].mean().reset_index()
                     fig, ax = plt.subplots()
-                    ax.set_facecolor('#0E1117')
                     sns.lineplot(data=monthly, x='month', y='sentiment', marker='o', ax=ax)
                     apply_dark_theme(ax)
                     plt.xticks(rotation=45)
@@ -428,7 +416,6 @@ if uploaded_file and 'analyze_btn' in locals():
                     cols[1].code(example_negative)
         else:
             st.info("Not enough messages for sentiment analysis")
-
 
 
 

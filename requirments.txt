@@ -1,0 +1,9 @@
+streamlit
+matplotlib==3.8.4
+seaborn
+pandas
+emoji
+wordcloud
+urlextract
+vaderSentiment
+python-dateutil

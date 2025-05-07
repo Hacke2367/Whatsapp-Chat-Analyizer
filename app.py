@@ -22,6 +22,8 @@ def apply_dark_theme(ax):
     ax.title.set_color('white')
     for spine in ax.spines.values():
         spine.set_edgecolor('white')
+    ax.grid(color='#404040', linestyle=':')
+
 
 # Sidebar
 with st.sidebar:
@@ -139,6 +141,8 @@ if uploaded_file and 'analyze_btn' in locals():
         plt.rcParams['axes.labelcolor'] = 'white'
         plt.rcParams['xtick.color'] = 'white'
         plt.rcParams['ytick.color'] = 'white'
+        plt.rcParams.update({'text.color': 'white'})
+
 
         # Tight layout and display
         plt.tight_layout()
@@ -155,6 +159,8 @@ if uploaded_file and 'analyze_btn' in locals():
             heatmap = helper.activity_heatmap(selected_user, df)
 
             fig, ax = plt.subplots()
+            fig.set_facecolor('#2A2A2A')  # यहां जोड़ें
+            ax.set_facecolor('#2A2A2A')  # यहां जोड़ें
 
             # Heatmap with annotations and styling
             sns.heatmap(
@@ -180,6 +186,7 @@ if uploaded_file and 'analyze_btn' in locals():
             cbar = ax.collections[0].colorbar
             cbar.set_label('Message Frequency', color='white')
             cbar.ax.yaxis.set_tick_params(color='white')
+            cbar.outline.set_edgecolor('white')
             plt.setp(cbar.ax.get_yticklabels(), color='white')
 
             # Axis labels and styling
@@ -197,6 +204,8 @@ if uploaded_file and 'analyze_btn' in locals():
             with tab1:
                 daily = helper.busyday_graph(selected_user, df)
                 fig, ax = plt.subplots()
+                fig.set_facecolor('#2A2A2A')  # यहां जोड़ें
+                ax.set_facecolor('#2A2A2A')  # यहां जोड़ें
                 ax.bar(daily.index, daily.values, color='#25CED1',edgecolor='white')
                 apply_dark_theme(ax)
                 plt.xticks(rotation=45)
@@ -206,6 +215,7 @@ if uploaded_file and 'analyze_btn' in locals():
                 monthly = helper.monthbusy_graph(selected_user, df)
                 fig, ax = plt.subplots()
                 ax.bar(monthly.index, monthly.values, color='#FF8A5B',edgecolor='white')
+
                 apply_dark_theme(ax)
                 plt.xticks(rotation=45)
                 plt.tight_layout()
@@ -224,6 +234,8 @@ if uploaded_file and 'analyze_btn' in locals():
 
             with col1:
                 fig, ax = plt.subplots(figsize=(8, 5))
+                fig.set_facecolor('#2A2A2A')  # यहां जोड़ें
+                ax.set_facecolor('#2A2A2A')  # यहां जोड़ें
                 ax.bar(
                     top_users.index,
                     top_users.values,
@@ -270,6 +282,8 @@ if uploaded_file and 'analyze_btn' in locals():
             st.subheader("☁️ Word Cloud")
             wc = helper.create_wordcloud(selected_user, df)
             fig, ax = plt.subplots()
+            fig.set_facecolor('#2A2A2A')  # यहां जोड़ें
+            ax.set_facecolor('#2A2A2A')  # यहां जोड़ें
             ax.imshow(wc)
             ax.axis("off")
             plt.tight_layout()
@@ -279,6 +293,8 @@ if uploaded_file and 'analyze_btn' in locals():
             st.subheader("🔠 Most Common Words")
             common = helper.most_common_words(selected_user, df)
             fig, ax = plt.subplots()
+            fig.set_facecolor('#2A2A2A')  # यहां जोड़ें
+            ax.set_facecolor('#2A2A2A')  # यहां जोड़ें
             ax.barh(common[0], common[1], color='limegreen')
             apply_dark_theme(ax)
             plt.tight_layout()
@@ -301,7 +317,9 @@ if uploaded_file and 'analyze_btn' in locals():
 
             with col2:
                 fig, ax = plt.subplots(figsize=(8, 8))
-                ax.set_facecolor('#0E1117')
+                fig.set_facecolor('#2A2A2A')  # यहां जोड़ें
+                ax.set_facecolor('#2A2A2A')  # यहां जोड़ें
+
 
                 # Critical Fixes for Emoji Rendering
                 plt.rcParams['font.family'] = 'Segoe UI Emoji'  # Windows

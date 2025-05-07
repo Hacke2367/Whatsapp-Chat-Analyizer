@@ -75,6 +75,8 @@ if uploaded_file and 'analyze_btn' in locals():
 
         # Create figure with custom size
         fig, ax = plt.subplots(figsize=(14, 6))
+        fig.patch.set_facecolor('#0E1117')
+        ax.set_facecolor('#0E1117')
 
         # Plot styling
         ax.plot(

@@ -49,11 +49,17 @@ if uploaded_file and 'analyze_btn' in locals():
 
         num_messages, words, media, links, first_msg, last_msg = helper.fetch_start(selected_user, df)
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric("💬 Total Messages", num_messages)
-        col2.metric("📝 Total Words", words)
-        col3.metric("📷 Media Shared", media)
-        col4.metric("🔗 Links Shared", links)
 
+        with col1:
+            st.metric("💬 Total Messages", num_messages or 0)
+        with col2:
+            st.metric("📝 Total Words", words or 0)
+        with col3:
+            st.metric("📷 Media Shared", media or 0)
+        with col4:
+            st.metric("🔗 Links Shared", links or 0)
+
+        st.write("")
         st.markdown("---")
         st.markdown("### 🕐 First & Last Message")
         fcol, lcol = st.columns(2)
@@ -62,6 +68,7 @@ if uploaded_file and 'analyze_btn' in locals():
         st.caption("Note: Media messages may appear as '<Media omitted>'.")
 
         # Monthly Activity Plot (Enhanced)
+        st.write("")
         st.markdown("---")
         st.markdown("### 📆 Monthly Activity")
         timeline = helper.montly_timeline(selected_user, df)
@@ -130,6 +137,8 @@ if uploaded_file and 'analyze_btn' in locals():
         st.pyplot(fig)
 
         # Activity Patterns
+        st.write("")
+        st.markdown("---")
         st.markdown("### 🗓️ Activity Pattern")
         st.markdown("**This heatmap shows which and when your message frequency is most")
         col1, col2 = st.columns(2)
@@ -196,6 +205,8 @@ if uploaded_file and 'analyze_btn' in locals():
 
 
         # Most Active Users
+        st.write("")
+        st.markdown("---")
         if selected_user == "Overall":
             st.markdown("### 👥 Top Contributors")
             st.markdown("** Top Contributors")
@@ -242,6 +253,8 @@ if uploaded_file and 'analyze_btn' in locals():
                 st.dataframe(styled_df, height=400)
 
         # Word Usage
+        st.write("")
+        st.markdown("---")
         st.markdown("### 💬 Word Usage")
         st.markdown("** most usage words.")
         col1, col2 = st.columns(2)
@@ -264,6 +277,8 @@ if uploaded_file and 'analyze_btn' in locals():
             st.pyplot(fig)
 
         # Emoji Analysis
+        st.write("")
+        st.markdown("---")
         st.markdown("### 😄 Emoji Analysis")
         emoji_df = helper.emoji_analysis(selected_user, df)
 
@@ -312,6 +327,7 @@ if uploaded_file and 'analyze_btn' in locals():
             st.info("No emojis found in this chat.")
 
         # Response Time Analysis
+        st.write("")
         st.markdown("---")
         st.markdown("### ⏱️ Response Time Analysis")
         response_df = helper.get_response_times_df(df)
@@ -345,6 +361,7 @@ if uploaded_file and 'analyze_btn' in locals():
             st.info("Not enough data to calculate response times")
 
         # Sentiment Analysis
+        st.write("")
         st.markdown("---")
         st.markdown("### 😃 Sentiment Insights")
         st.caption("Sentiment score ranges from -1 (Negative) to +1 (Positive)")

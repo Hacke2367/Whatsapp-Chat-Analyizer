@@ -75,8 +75,8 @@ if uploaded_file and 'analyze_btn' in locals():
 
         # Create figure with custom size
         fig, ax = plt.subplots(figsize=(14, 6))
-        fig.patch.set_facecolor('#0E1117')
-        ax.set_facecolor('#0E1117')
+        fig.set_facecolor('#2A2A2A')
+        ax.set_facecolor('#2A2A2A')
 
         # Plot styling
         ax.plot(
@@ -131,8 +131,14 @@ if uploaded_file and 'analyze_btn' in locals():
             backgroundcolor='#2A2A2A'
         )
 
+        fig.set_facecolor('#2A2A2A')
+        ax.set_facecolor('#2A2A2A')
+
         # Apply dark theme compatibility
-        apply_dark_theme(ax)  # Ensure this sets facecolor properly
+        apply_dark_theme(ax)
+        plt.rcParams['axes.labelcolor'] = 'white'
+        plt.rcParams['xtick.color'] = 'white'
+        plt.rcParams['ytick.color'] = 'white'
 
         # Tight layout and display
         plt.tight_layout()
